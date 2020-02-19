@@ -15,6 +15,10 @@ public class Main {
 
     Grid map = new Grid(f);
     map.print();
+    System.out.println(map.size);
+    System.out.println(map.initialPos);
+    System.out.println(map.goalPos);
+
 
   }
 

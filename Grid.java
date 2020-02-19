@@ -7,6 +7,14 @@ public class Grid {
   //2d array
   public char[][] g;
 
+  public Pair initialPos;
+  public Pair goalPos;
+
+  public char empty = '.';
+  public char obstacle = '+';
+  public char initial = 'i';
+  public char goal = 'g';
+
   Grid(File file) {
     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
       String line = br.readLine();
@@ -16,6 +24,12 @@ public class Grid {
       while ((line = br.readLine()) != null) {
          for(int j = 0; j < size; j++) {
            g[i][j] = line.charAt(j);
+           if(initial == g[i][j]) {
+             initialPos = new Pair(i,j);
+           }
+           if(goal == g[i][j]) {
+             goalPos = new Pair(i,j);
+           }
          }
          i++;
       }
