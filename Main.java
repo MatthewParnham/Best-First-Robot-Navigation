@@ -15,17 +15,15 @@ public class Main {
 
     Grid map = new Grid(f);
 
-    map.print();
-
-    Search s = new Search();
-
-
 //Search Test
+    Search s = new Search(false,Search.SearchMode.MANHATTAN,map);
+    System.out.println(s.mode);
+    s.map.print();
     Pair p1 = new Pair(2,2);
     Pair p2 = new Pair(0,0);
 
-    System.out.println(s.euclidDist(p1,p2));
-    System.out.println(s.manhatDist(p1,p2));
+    System.out.println(s.evaluate(p1,p2));
+
 // ----------
 
   }
