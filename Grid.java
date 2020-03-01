@@ -10,10 +10,10 @@ public class Grid {
   public Pair initialPos;
   public Pair goalPos;
 
-  public char empty = '.';
-  public char obstacle = '+';
-  public char initial = 'i';
-  public char goal = 'g';
+  public static char empty = '.';
+  public static char obstacle = '+';
+  public static char initial = 'i';
+  public static char goal = 'g';
 
   Grid(File file) {
     try (BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -46,6 +46,20 @@ public class Grid {
       }
       System.out.print("\n");
     }
+  }
+
+//All these are row, column
+  public char get(Pair cell) {
+    return g[cell.getX()][cell.getY()];
+  }
+  public char get(int x, int y) {
+    return g[x][y];
+  }
+  public void set(Pair cell, char c) {
+    g[cell.getX()][cell.getY()] = c;
+  }
+  public void set(int x, int y, char c) {
+    g[x][y] = c;
   }
 
   public List<Pair> getNeighbors(Pair cell) {

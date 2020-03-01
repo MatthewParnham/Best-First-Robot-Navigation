@@ -19,6 +19,13 @@ public class Main {
     System.out.println(map.initialPos);
     System.out.println(map.goalPos);
 
+    System.out.println();
+    System.out.println(map.get(2,1));
+    System.out.println(map.get(1,2));
+    System.out.println();
+    map.set(0,0, Grid.obstacle);
+    map.print();
+
 
   }
 
