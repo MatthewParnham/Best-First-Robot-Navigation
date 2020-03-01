@@ -55,7 +55,8 @@ public class Search {
     if(openList.isEmpty()) {
       openList.add(n);
     }
-    for(int i = 0; i < openList.size(); i++) {
+    int size = openList.size();
+    for(int i = 0; i < size; i++) {
       if (openList.get(i).f > n.f) {
         openList.add(i,n);
       }
@@ -91,36 +92,40 @@ public class Search {
     while(!openList.isEmpty()) {
       Node curr = openList.get(0);
       if(curr.position.equals(map.goalPos)) {
-        result.add(curr);
+        Node end = curr.parent;
+        while(end.parent != null) {
+          result.add(end);
+          end = end.parent;
+        }
         return result;
       }
       openList.remove(0);
       closedList.add(curr);
 
-      List<Pair> currNeighs = map.getNeighbors(curr);
+      List<Pair> currNeighs = map.getNeighbors(curr.position);
       for (Pair childPos : currNeighs) {
+        if(map.get(childPos) == map.obstacle) {
+          continue;
+        }
         Node childNode = new Node(childPos,(curr.g + 1),evaluate(childPos,map.goalPos));
         //check if node is in closed List
         if(closedContains(childPos) >= 0) {
           continue;
         }
 
-        childIdx = openContains(childPos);
-        if(childIdx == -1) {
-          insertOpen(childNode);
-          childNode.parent = curr;
-        } else {
+        int childIdx = openContains(childPos);
+        if(childIdx >= 0) {
           if(childNode.g > openList.get(childIdx).g) {
-            
+            continue;
           }
         }
-        int currCost = cost + 1;
-        if(openList.contains(child) && )
+        insertOpen(childNode);
+        childNode.parent = curr;
       }
 
 
     }
-    return new ArrayList<Pair>();
+    return new ArrayList<Node>();
   }
 
 }

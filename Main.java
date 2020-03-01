@@ -15,35 +15,23 @@ public class Main {
     }
 
     Grid map = new Grid(f);
+    Grid mapCopy = new Grid(f);
+    map.print();
 
 //Search Test
-    Search s = new Search(false,Search.SearchMode.MANHATTAN,map);
-    System.out.println(s.mode);
-    s.map.print();
-    Pair p1 = new Pair(2,2);
-    Pair p2 = new Pair(0,0);
+    Search s = new Search(false,Search.SearchMode.EUCLIDEAN,map);
 
-    System.out.println(p1.equals(p2));
-    p2.setX(2);
-    p2.setY(1);
-    System.out.println(p1.equals(p2));
+    List<Node> result = s.findPath();
+    System.out.println("Solution");
+    for(Node n : result) {
+      mapCopy.set(n.position,'o');
+      //System.out.println(n.position);
+    }
+    mapCopy.print();
 
 // ----------
 
-// List Test
-    System.out.println();
-    System.out.println();
-    List<String> l = new ArrayList<String>();
-    l.add(0,"a");
-    l.add(0,"b");
-    l.add(0,"c");
-    l.add(1,"d");
 
-    for(int i = 0; i < l.size(); i++) {
-      System.out.print(l.get(i) + " ");
-    }
-    System.out.print("\n");
-// ------------
   }
 
 }
