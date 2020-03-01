@@ -1,4 +1,5 @@
 import java.io.File;
+import java.util.*;
 
 public class Main {
 
@@ -22,10 +23,27 @@ public class Main {
     Pair p1 = new Pair(2,2);
     Pair p2 = new Pair(0,0);
 
-    System.out.println(s.evaluate(p1,p2));
+    System.out.println(p1.equals(p2));
+    p2.setX(2);
+    p2.setY(1);
+    System.out.println(p1.equals(p2));
 
 // ----------
 
+// List Test
+    System.out.println();
+    System.out.println();
+    List<String> l = new ArrayList<String>();
+    l.add(0,"a");
+    l.add(0,"b");
+    l.add(0,"c");
+    l.add(1,"d");
+
+    for(int i = 0; i < l.size(); i++) {
+      System.out.print(l.get(i) + " ");
+    }
+    System.out.print("\n");
+// ------------
   }
 
 }
