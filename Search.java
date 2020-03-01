@@ -7,10 +7,11 @@ public class Search {
     EUCLIDEAN, MANHATTAN
   }
 
-  public boolean addCost;
+  public boolean addCost; //Toggles whether or not g(n) is added to f(n)
   public SearchMode mode;
   public Grid map;
 
+  public int searchTreeSize;
 
   public List<Node> openList;
   public List<Node> closedList;
@@ -19,6 +20,7 @@ public class Search {
     this.addCost = addCost;
     this.mode = mode;
     this.map = map;
+    this.searchTreeSize = 0;
     this.openList = new ArrayList<Node>();
     this.closedList = new ArrayList<Node>();
   }
@@ -45,6 +47,7 @@ public class Search {
     return (double)x+y;
   }
 
+//Surprisingly messy function to make sure all inserts into fringe are sorted
   public void insertOpen(Node n) {
     if(openList.isEmpty()) {
       openList.add(n);
@@ -52,7 +55,7 @@ public class Search {
     }
     int size = openList.size();
     for(int i = 0; i < size; i++) {
-      if(addCost) {
+      if(addCost) { //take into account g(n) or not
         if (openList.get(i).f > n.f) {
           openList.add(i,n);
           return;
@@ -68,6 +71,9 @@ public class Search {
     openList.add(size-1,n);
   }
 
+  //Since I'm using custom Pair and node, the List.contains() does not work and we need a custom contains
+  //Choosing to return an int of the idx where the element is found and -1 if not found instead of boolean
+  //This allows us to easily access said element in case we need to remove it
   public int closedContains(Pair p) {
     for(int i = 0; i < closedList.size(); i++) {
       if(closedList.get(i).position.equals(p)) {
@@ -85,6 +91,7 @@ public class Search {
     return -1;
   }
 
+  //For debugging. Prints fringe
   public void printOpenList() {
     System.out.println("===Open List===");
     for (Node n : openList) {
@@ -95,17 +102,18 @@ public class Search {
   public List<Node> findPath() {
     //Insert initial position into fringe
     Node root = new Node(map.initialPos,0,evaluate(map.initialPos,map.goalPos));
+    searchTreeSize++;
 
     insertOpen(root);
 
+    //Create List for output
     List<Node> result = new ArrayList<Node>();
 
     //while fringe has something in it
     while(!openList.isEmpty()) {
-      //printOpenList();
+      //Set current to cheapest element in fringe
       Node curr = openList.get(0);
-      //System.out.println("New Iteration: Current Node: " + curr.position);
-      //printOpenList();
+      //if current is the goal, generate a list of the path taken and return
       if(curr.position.equals(map.goalPos)) {
         Node end = curr.parent;
         while(end.parent != null) {
@@ -114,14 +122,14 @@ public class Search {
         }
         return result;
       }
+      //Pop curr from fringe and add to closedList
       openList.remove(0);
       closedList.add(curr);
 
       //Loop through children
       List<Pair> currNeighs = map.getNeighbors(curr.position);
       for (Pair childPos : currNeighs) {
-        //System.out.println("ChildPos: " + childPos);
-        //printOpenList();
+
         //make sure it's walkable
         if(map.get(childPos) == map.obstacle) {
           continue;
@@ -132,22 +140,24 @@ public class Search {
           continue;
         }
 
-        //Generate actual node
+        //Generate actual node. Doing it down here to save time/memory in case the two previous checks fail
         Node childNode = new Node(childPos,(curr.g + 1),evaluate(childPos,map.goalPos));
         childNode.parent = curr;
+        searchTreeSize++;
 
         //Child is in the open list
         int childIdx = openContains(childPos);
-        //System.out.println(childIdx);
         if(childIdx >= 0) {
-          /*if(childNode.g < openList.get(childIdx).g) {
+          //Check if new node is cheaper g(n) than previous. If so, pop old one
+          if(childNode.g < openList.get(childIdx).g) {
             openList.remove(childIdx);
-          }*/
+          }
+          //preventing dupes in fringe
           continue;
         }
 
+        //Finally, checks have passed. Insert child into fringe
         insertOpen(childNode);
-        childNode.parent = curr;
 
       }
 
