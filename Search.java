@@ -11,7 +11,6 @@ public class Search {
   public SearchMode mode;
   public Grid map;
 
-  public int cost;
 
   public List<Node> openList;
   public List<Node> closedList;
@@ -20,7 +19,6 @@ public class Search {
     this.addCost = addCost;
     this.mode = mode;
     this.map = map;
-    this.cost = 0;
     this.openList = new ArrayList<Node>();
     this.closedList = new ArrayList<Node>();
   }
@@ -32,10 +30,6 @@ public class Search {
     }
     else { //mode == SearchMode.EUCLIDEAN
       dist = euclidDist(a,b);
-    }
-
-    if(addCost) {
-      dist += (double)cost;
     }
     return dist;
   }
@@ -54,12 +48,22 @@ public class Search {
   public void insertOpen(Node n) {
     if(openList.isEmpty()) {
       openList.add(n);
+      return;
     }
     int size = openList.size();
     for(int i = 0; i < size; i++) {
-      if (openList.get(i).f > n.f) {
-        openList.add(i,n);
+      if(addCost) {
+        if (openList.get(i).f > n.f) {
+          openList.add(i,n);
+          return;
+        }
+      } else {
+        if (openList.get(i).h > n.h) {
+          openList.add(i,n);
+          return;
+        }
       }
+
     }
     openList.add(size-1,n);
   }
@@ -98,7 +102,7 @@ public class Search {
 
     //while fringe has something in it
     while(!openList.isEmpty()) {
-
+      //printOpenList();
       Node curr = openList.get(0);
       //System.out.println("New Iteration: Current Node: " + curr.position);
       //printOpenList();
@@ -134,10 +138,11 @@ public class Search {
 
         //Child is in the open list
         int childIdx = openContains(childPos);
+        //System.out.println(childIdx);
         if(childIdx >= 0) {
-          if(childNode.g > openList.get(childIdx).g) {
-            continue;
-          }
+          /*if(childNode.g < openList.get(childIdx).g) {
+            openList.remove(childIdx);
+          }*/
           continue;
         }
 

@@ -22,15 +22,43 @@ public class Main {
     Search s = new Search(false,Search.SearchMode.MANHATTAN,map);
 
     List<Node> result = s.findPath();
-    System.out.println("Solution");
+    System.out.println("Solution: Strategy 1");
     for(Node n : result) {
       mapCopy.set(n.position,'o');
-      //System.out.println(n.position);
     }
     mapCopy.print();
 
-// ----------
 
+
+    s = new Search(false,Search.SearchMode.EUCLIDEAN,map);
+    mapCopy = new Grid(f);
+
+    result = s.findPath();
+    System.out.println("Solution: Strategy 2");
+    for(Node n : result) {
+      mapCopy.set(n.position,'o');
+    }
+    mapCopy.print();
+
+    s = new Search(true,Search.SearchMode.MANHATTAN,map);
+    mapCopy = new Grid(f);
+
+    result = s.findPath();
+    System.out.println("Solution: Strategy 3");
+    for(Node n : result) {
+      mapCopy.set(n.position,'o');
+    }
+    mapCopy.print();
+
+    s = new Search(true,Search.SearchMode.EUCLIDEAN,map);
+    mapCopy = new Grid(f);
+
+    result = s.findPath();
+    System.out.println("Solution: Strategy 4");
+    for(Node n : result) {
+      mapCopy.set(n.position,'o');
+    }
+    mapCopy.print();
 
   }
 
