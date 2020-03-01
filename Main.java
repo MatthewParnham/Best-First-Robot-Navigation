@@ -14,18 +14,19 @@ public class Main {
     }
 
     Grid map = new Grid(f);
-    map.print();
-    System.out.println(map.size);
-    System.out.println(map.initialPos);
-    System.out.println(map.goalPos);
 
-    System.out.println();
-    System.out.println(map.get(2,1));
-    System.out.println(map.get(1,2));
-    System.out.println();
-    map.set(0,0, Grid.obstacle);
     map.print();
 
+    Search s = new Search();
+
+
+//Search Test
+    Pair p1 = new Pair(2,2);
+    Pair p2 = new Pair(0,0);
+
+    System.out.println(s.euclidDist(p1,p2));
+    System.out.println(s.manhatDist(p1,p2));
+// ----------
 
   }
 
