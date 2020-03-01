@@ -17,4 +17,12 @@ public class Node {
     this.f = g + h;
   }
 
+  public String toString() {
+    return " Position: " +
+    this.position +
+    " f: " + this.f +
+    " g: " + this.g +
+    " h: " + this.h;
+  }
+
 }

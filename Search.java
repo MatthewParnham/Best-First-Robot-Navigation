@@ -61,6 +61,7 @@ public class Search {
         openList.add(i,n);
       }
     }
+    openList.add(size-1,n);
   }
 
   public int closedContains(Pair p) {
@@ -80,6 +81,13 @@ public class Search {
     return -1;
   }
 
+  public void printOpenList() {
+    System.out.println("===Open List===");
+    for (Node n : openList) {
+      System.out.println(n);
+    }
+  }
+
   public List<Node> findPath() {
     //Insert initial position into fringe
     Node root = new Node(map.initialPos,0,evaluate(map.initialPos,map.goalPos));
@@ -90,7 +98,10 @@ public class Search {
 
     //while fringe has something in it
     while(!openList.isEmpty()) {
+
       Node curr = openList.get(0);
+      //System.out.println("New Iteration: Current Node: " + curr.position);
+      //printOpenList();
       if(curr.position.equals(map.goalPos)) {
         Node end = curr.parent;
         while(end.parent != null) {
@@ -102,25 +113,37 @@ public class Search {
       openList.remove(0);
       closedList.add(curr);
 
+      //Loop through children
       List<Pair> currNeighs = map.getNeighbors(curr.position);
       for (Pair childPos : currNeighs) {
+        //System.out.println("ChildPos: " + childPos);
+        //printOpenList();
+        //make sure it's walkable
         if(map.get(childPos) == map.obstacle) {
           continue;
         }
-        Node childNode = new Node(childPos,(curr.g + 1),evaluate(childPos,map.goalPos));
+
         //check if node is in closed List
         if(closedContains(childPos) >= 0) {
           continue;
         }
 
+        //Generate actual node
+        Node childNode = new Node(childPos,(curr.g + 1),evaluate(childPos,map.goalPos));
+        childNode.parent = curr;
+
+        //Child is in the open list
         int childIdx = openContains(childPos);
         if(childIdx >= 0) {
           if(childNode.g > openList.get(childIdx).g) {
             continue;
           }
+          continue;
         }
+
         insertOpen(childNode);
         childNode.parent = curr;
+
       }
 
 

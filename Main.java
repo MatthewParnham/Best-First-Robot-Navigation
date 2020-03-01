@@ -19,7 +19,7 @@ public class Main {
     map.print();
 
 //Search Test
-    Search s = new Search(false,Search.SearchMode.EUCLIDEAN,map);
+    Search s = new Search(false,Search.SearchMode.MANHATTAN,map);
 
     List<Node> result = s.findPath();
     System.out.println("Solution");
