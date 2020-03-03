@@ -3,4 +3,8 @@
 ## Matthew Parnham
 
 Implementation of Best-First Search Algorithm in Java
-using Euclidean and Manhattan distance with an option to add total cost
+h(n) = MANHATTAN or EUCLIDEAN distance
+g(n) = current path cost
+f(n) = h(n) + g(n) (g(n) can be optionally removed for varied results)
+
+
